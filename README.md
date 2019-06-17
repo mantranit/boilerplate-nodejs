@@ -19,5 +19,5 @@
 * Run dev: npm run dev
 * http://localhost:4000
 
-## Git
-* git update-index --assume-unchanged .env
+## Env
+* example in server/env
