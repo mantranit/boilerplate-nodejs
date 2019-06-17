@@ -1,0 +1,39 @@
+﻿{
+  "email": {
+    "subjectRecoverPassword": "Recover your Account",
+    "templateRecoverPassword": "RecoverPassword.mustache"
+  },
+  "defaultEmailOptions": {
+    "method": "POST",
+    "url": "https://mandrillapp.com/api/1.0/messages/send.json",
+    "headers": {
+      "Cache-Control": "no-cache",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "key": "8vza3h6ClD1LztSd3w_Vsw",
+      "message": {
+        "to": [],
+        "subject": "",
+        "html": "",
+        "from_email": "Change4Change@email.com",
+        "from_name": "Change4Change",
+        "inline_css": true
+      },
+      "async": true
+    },
+    "json": true
+  },
+  "emailOption": {
+    "host": "mail.watasolutions.com",
+    "port": 587,
+    "secure": false,
+    "tls": {
+      "rejectUnauthorized": false
+    },
+    "auth": {
+      "user": "man.trandm@watasolutions.com",
+      "pass": "!Aa12345678"
+    }
+  }
+}
