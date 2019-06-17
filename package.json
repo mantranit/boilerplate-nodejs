@@ -1,24 +1,24 @@
 {
-  "name": "simple_app",
+  "name": "boilerplate_nodejs",
   "version": "1.0.0",
   "description": "NodeJS + MongoDB API",
-  "license": "MIT",
+  "license": "GNU GPLv3",
   "scripts": {
     "start": "node ./server.js",
     "dev": "DEBUG=express:* nodemon ./server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "express-jwt": "^5.3.1",
     "fs": "0.0.1-security",
-    "generate-password": "^1.4.1",
-    "jsonwebtoken": "^8.5.0",
-    "mongodb": "^3.1.13",
-    "mongoose": "^5.4.16",
+    "generate-password": "^1.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.2.7",
+    "mongoose": "^5.6.0",
     "mustache": "^3.0.1",
     "nodemailer": "^5.1.1",
     "path": "^0.12.7",
@@ -28,9 +28,9 @@
     "socket.io": "^2.2.0",
     "socketio-jwt": "^4.5.0",
     "swagger-jsdoc": "^3.2.9",
-    "swagger-ui-express": "^4.0.2"
+    "swagger-ui-express": "^4.0.6"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.19.1"
   }
 }
