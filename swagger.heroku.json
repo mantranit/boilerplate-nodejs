@@ -1,9 +1,9 @@
 {
   "swaggerDefinition": {
     "info": {
-      "title": "Change4Change API on HEROKU",
+      "title": "API on HEROKU",
       "version": "1.0.0",
-      "description": "RESTful API for Change4Change"
+      "description": "Simple RESTful API"
     },
     "host": "c4c-be.herokuapp.com",
     "basePath": "/api",

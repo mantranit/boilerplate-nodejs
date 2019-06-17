@@ -1,9 +1,9 @@
 {
   "swaggerDefinition": {
     "info": {
-      "title": "Change4Change API on LOCALHOST",
+      "title": "API on LOCALHOST",
       "version": "1.0.0",
-      "description": "RESTful API for Change4Change"
+      "description": "Simple RESTful API"
     },
     "host": "localhost:4000",
     "basePath": "/api",
