@@ -2,10 +2,16 @@
   "name": "boilerplate_nodejs",
   "version": "1.0.0",
   "description": "NodeJS + MongoDB API",
-  "license": "GNU GPLv3",
+  "author": "Man Tran",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mantranit/boilerplate-nodejs.git"
+  },
   "scripts": {
     "start": "node ./server.js",
-    "dev": "DEBUG=express:* nodemon ./server.js"
+    "dev": "DEBUG=express:* nodemon ./server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
