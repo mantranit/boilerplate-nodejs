@@ -105,11 +105,11 @@ async function createPassword(accessToken, userParam) {
 }
 
 async function getAll() {
-  return await User.find().select('-hash -accessToken -role');
+  return await User.find().select('-hash -accessToken');
 }
 
 async function getById(id) {
-  return await User.findById(id).select('-hash -accessToken -role');
+  return await User.findById(id).select('-hash -accessToken');
 }
 
 async function create(userParam) {
@@ -169,7 +169,7 @@ async function update(id, userParam) {
     user.hash = bcrypt.hashSync(userParam.password, 10);
   }
 
-  const { hash, status, accessToken, createdDate, ...userParamClean} = userParam;
+  const { hash, accessToken, createdDate, ...userParamClean} = userParam;
   // copy userParamClean properties to user
   Object.assign(user, userParamClean);
 
