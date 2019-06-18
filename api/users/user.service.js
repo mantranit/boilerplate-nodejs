@@ -1,4 +1,4 @@
-﻿const config = require('config.json');
+﻿const config = require('../../server/config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const {User} = require('models');
@@ -30,14 +30,14 @@ async function authenticate({email, password, stay}) {
     throw 'Incorrect password. Please try again.';
   }
 
-  const {hash, status, accessToken, ...userWithoutHash} = user.toObject();
+  const {hash, status, accessToken, role, ...userWithoutHash} = user.toObject();
 
   let jwtOption = {expiresIn: '1d'};
   if (stay) {
     jwtOption = {expiresIn: '7d'};
   }
 
-  const tokenLogin = jwt.sign({sub: user.id}, process.env.JWT_SECRET, jwtOption);
+  const tokenLogin = jwt.sign({sub: user.id, role}, process.env.JWT_SECRET, jwtOption);
   return {
     ...userWithoutHash,
     token: tokenLogin
@@ -105,11 +105,11 @@ async function createPassword(accessToken, userParam) {
 }
 
 async function getAll() {
-  return await User.find().select('-hash -accessToken');
+  return await User.find().select('-hash -accessToken -role');
 }
 
 async function getById(id) {
-  return await User.findById(id).select('-hash -accessToken');
+  return await User.findById(id).select('-hash -accessToken -role');
 }
 
 async function create(userParam) {

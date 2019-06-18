@@ -7,10 +7,6 @@ image: node:10.15.3
 
 pipelines:
 
-  default:
-    - step:
-        script: # Modify the commands below to build your repository.
-          - echo "Start default step"
   branches:
    develop:
     - step:

@@ -1,6 +1,8 @@
 ﻿const express = require('express');
 const router = express.Router();
 const userService = require('./user.service');
+const authorize = require('../../_helpers/authorize');
+const { getUserRole } = require('../../_helpers/utils');
 
 // routes
 /**
@@ -124,7 +126,7 @@ router.post('/create-password/:accessToken', (req, res, next) => {
  *       200:
  *         description: It always return status code 200 and the end user must be check status inside the response
  */
-router.get('/', (req, res, next) => {
+router.get('/', authorize(), (req, res, next) => {
   userService.getAll()
     .then(users => res.json({
       status: 200,
@@ -146,7 +148,7 @@ router.get('/', (req, res, next) => {
  *       200:
  *         description: It always return status code 200 and the end user must be check status inside the response
  */
-router.get('/current', (req, res, next) => {
+router.get('/current', authorize(), (req, res, next) => {
   userService.getById(req.user.sub)
     .then(user => user ? res.json({
       status: 200,
@@ -172,7 +174,7 @@ router.get('/current', (req, res, next) => {
  *       200:
  *         description: It always return status code 200 and the end user must be check status inside the response
  */
-router.get('/:id', (req, res, next) => {
+router.get('/:id', authorize(), (req, res, next) => {
   userService.getById(req.params.id)
     .then(user => user ? res.json({
       status: 200,
@@ -206,7 +208,7 @@ router.get('/:id', (req, res, next) => {
  *       200:
  *         description: It always return status code 200 and the end user must be check status inside the response
  */
-router.put('/:id', (req, res, next) => {
+router.put('/:id', authorize(), (req, res, next) => {
   userService.update(req.params.id, req.body)
     .then(user => user ? res.json({
       status: 200,
@@ -232,7 +234,7 @@ router.put('/:id', (req, res, next) => {
  *       200:
  *         description: It always return status code 200 and the end user must be check status inside the response
  */
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', authorize(getUserRole().ADMIN), (req, res, next) => {
   userService.delete(req.params.id)
     .then(() => res.json({
       status: 200

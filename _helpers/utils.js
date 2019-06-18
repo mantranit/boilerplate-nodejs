@@ -1,4 +1,4 @@
-const config = require('config.json');
+const config = require('../server/config');
 const mustache = require('mustache');
 const fs = require('fs');
 const path = require('path');
@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 
 module.exports = {
   getUserStatus,
+  getUserRole,
   getApiUrl,
   getDomain,
   sendEmail
@@ -18,6 +19,13 @@ function getUserStatus() {
     DEACTIVATED: 'DEACTIVATED',
     PENDING: 'PENDING',
     LOCKED: 'LOCKED'
+  }
+}
+
+function getUserRole() {
+  return {
+    ADMIN: 'ADMIN',
+    USER: 'USER'
   }
 }
 

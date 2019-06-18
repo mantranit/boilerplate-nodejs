@@ -15,7 +15,7 @@ app.use(cors({ origin: '*' }));
 const swaggerJSDoc = require('swagger-jsdoc');
 
 // initialize swagger-jsdoc
-const swaggerDefinition = (process.env.NODE_ENV === 'production') ? require('./swagger.heroku.json') : require('./swagger.json');
+const swaggerDefinition = (process.env.NODE_ENV === 'production') ? require('./server/swagger.heroku.json') : require('./server/swagger.json');
 const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 const swaggerUi = require('swagger-ui-express');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
