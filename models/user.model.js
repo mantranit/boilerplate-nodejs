@@ -18,6 +18,7 @@ const schema = new Schema({
   accessToken: {type: String, default: ''},
 
   createdDate: {type: Date, default: Date.now}
+
 });
 
 schema.set('toJSON', {virtuals: true});

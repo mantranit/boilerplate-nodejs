@@ -24,5 +24,9 @@
 
 ## Generate
 * Using __hygen__ library, you have to install hygen global -- e.g: npm i -g hygen
+#### Generate Model only
 * Generate __model__: hygen model new
 * Declare an attribute: __name:type__ (default of type is __String__)
+#### Generate API
+* Generate __api__: hygen api new
+* All options will be like model

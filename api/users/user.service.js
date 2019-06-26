@@ -169,7 +169,7 @@ async function update(id, userParam) {
     user.hash = bcrypt.hashSync(userParam.password, 10);
   }
 
-  const { hash, accessToken, createdDate, ...userParamClean} = userParam;
+  const { hash, accessToken, createdDate, ...userParamClean } = userParam;
   // copy userParamClean properties to user
   Object.assign(user, userParamClean);
 
