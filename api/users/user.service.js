@@ -1,10 +1,10 @@
 ﻿const config = require('../../server/config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const {User} = require('models');
+const { User } = require('models');
 const generator = require('generate-password');
-const {getUserStatus, sendEmail} = require('_helpers/utils');
-const {validateEmail, validatePassword} = require('_helpers/validations');
+const { getUserStatus, sendEmail } = require('_helpers/utils');
+const { validateEmail, validatePassword } = require('_helpers/validations');
 
 module.exports = {
   authenticate,
@@ -30,7 +30,7 @@ async function authenticate({email, password, stay}) {
     throw 'Incorrect password. Please try again.';
   }
 
-  const {hash, status, accessToken, role, ...userWithoutHash} = user.toObject();
+  const { hash, status, accessToken, role, ...userWithoutHash } = user.toObject();
 
   let jwtOption = {expiresIn: '1d'};
   if (stay) {
@@ -51,14 +51,15 @@ async function forgotPassword(userParam) {
     throw 'Can not found an account with your information!';
   }
 
-  user.status = getUserStatus().LOCKED;
+  // user.status = getUserStatus().LOCKED;
 
   //token for create new password
-  let secret = generator.generate({
-    length: 30,
+  let password = generator.generate({
+    length: 10,
     numbers: true
   });
-  user.accessToken = secret;
+  // user.accessToken = secret;
+  user.hash = bcrypt.hashSync(password, 10);
 
   //send mail
   await sendEmail(
@@ -66,9 +67,7 @@ async function forgotPassword(userParam) {
     config.email.subjectRecoverPassword,    //subject
     config.email.templateRecoverPassword,   //template
     {                                       //dataTemplate
-      domain: 'http://domain.com',
-      secret,
-      action: 'Reset Password'
+      password
     }
   );
 

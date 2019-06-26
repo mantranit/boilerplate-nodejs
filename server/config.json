@@ -1,6 +1,6 @@
 ﻿{
   "email": {
-    "subjectRecoverPassword": "Recover your Account",
+    "subjectRecoverPassword": "Forgotten password reset",
     "templateRecoverPassword": "RecoverPassword.mustache"
   },
   "defaultEmailOptions": {
