@@ -21,3 +21,8 @@
 
 ## Env
 * example in server/env
+
+## Generate
+* Using __hygen__ library, you have to install hygen global -- e.g: npm i -g hygen
+* Generate __model__: hygen model new
+* Declare an attribute: __name:type__ (default of type is __String__)
