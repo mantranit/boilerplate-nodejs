@@ -33,6 +33,40 @@ router.get('/', authorize(), (req, res, next) => {
 
 /**
 * @swagger
+* /<%= h.inflection.pluralize(name) %>/:
+*   post:
+*     tags:
+*       - <%= h.inflection.capitalize(h.inflection.pluralize(name)) %>
+*     description: Returns status true|false
+*     security:
+*       - Bearer: []
+*     parameters:
+<%
+var i = 0;
+var tmpArray = attributes.split(',');
+        while (i < tmpArray.length) {
+  var tmp = tmpArray[i].trim().split(':');
+%>
+*       - in: formData
+*         name: <%= tmp[0] && tmp[0].trim() ? h.changeCase.lcFirst(tmp[0].trim()) : 'sample' %>
+<%
+  i++;
+}
+%>
+*     responses:
+*       200:
+*         description: It always return status code 200 and the end user must be check status inside the response
+*/
+router.post('/', (req, res, next) => {
+  <%= name %>Service.create(req.body)
+    .then(() => res.json({
+      status: 200
+    }))
+    .catch(err => next(err));
+});
+
+/**
+* @swagger
 * /<%= h.inflection.pluralize(name) %>/{id}:
 *   get:
 *     tags:
