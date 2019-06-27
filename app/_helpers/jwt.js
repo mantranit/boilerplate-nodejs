@@ -5,18 +5,17 @@ module.exports = jwt;
 
 function jwt() {
   const secret = process.env.JWT_SECRET;
-  return expressJwt({secret, isRevoked}).unless({
-    path: [
-      // for swagger.io
-      /\/api-docs/i,
-      // public routes that don't require authentication
-      '/api/users/authenticate',
-      '/api/users/register',
-      '/api/users/forgot-password',
-      /\/api\/users\/token/i,
-      /\/api\/users\/create-password/i
-    ]
-  });
+
+  let path = [
+    // public routes that don't require authentication
+    '/api/users/authenticate',
+    '/api/users/register',
+    '/api/users/forgot-password',
+    /\/api\/users\/token/i,
+    /\/api\/users\/create-password/i
+  ];
+
+  return expressJwt({ secret, isRevoked }).unless({ path });
 }
 
 async function isRevoked(req, payload, done) {
