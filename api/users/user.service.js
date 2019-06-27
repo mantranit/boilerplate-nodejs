@@ -54,12 +54,11 @@ async function forgotPassword(userParam) {
   // user.status = getUserStatus().LOCKED;
 
   //token for create new password
-  let password = generator.generate({
-    length: 10,
+  let secret = generator.generate({
+    length: 30,
     numbers: true
   });
-  // user.accessToken = secret;
-  user.hash = bcrypt.hashSync(password, 10);
+  user.accessToken = secret;
 
   //send mail
   await sendEmail(
@@ -67,7 +66,8 @@ async function forgotPassword(userParam) {
     config.email.subjectRecoverPassword,    //subject
     config.email.templateRecoverPassword,   //template
     {                                       //dataTemplate
-      password
+      email: user.email,
+      urlReset: 'http://domain.com/reset-password/' + secret
     }
   );
 
