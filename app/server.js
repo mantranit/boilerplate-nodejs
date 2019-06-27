@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 const jwt = require('_helpers/jwt');
 const errorHandler = require('_helpers/error-handler');
 const socket = require('_helpers/socket');
@@ -19,6 +20,17 @@ const swaggerDefinition = (process.env.NODE_ENV === 'production') ? require('./s
 const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 const swaggerUi = require('swagger-ui-express');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.set('view engine','ejs');
+app.set('views',path.join(__dirname,'public/views'));
+
+app.get('/reset-password/:accessToken',function(req,res){
+  const token = req.params.accessToken;
+
+  if (token) {
+    res.render('reset_password', { token });
+  }
+});
 
 // use JWT auth to secure the api
 app.use(jwt());
