@@ -1,4 +1,4 @@
-const config = require('../server/config');
+const config = require('../config');
 const mustache = require('mustache');
 const fs = require('fs');
 const path = require('path');

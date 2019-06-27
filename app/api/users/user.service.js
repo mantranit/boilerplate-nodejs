@@ -1,7 +1,7 @@
-﻿const config = require('../../server/config');
+﻿const config = require('../../config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { User } = require('models');
+const { User } = require('models/index');
 const generator = require('generate-password');
 const { getUserStatus, sendEmail } = require('_helpers/utils');
 const { validateEmail, validatePassword } = require('_helpers/validations');
