@@ -1,6 +1,6 @@
 ---
 inject: true
-to: api/index.js
+to: app/api/index.js
 before: '//==INSERT=='
 skip_if: <%= h.inflection.pluralize(name) %>
 ---

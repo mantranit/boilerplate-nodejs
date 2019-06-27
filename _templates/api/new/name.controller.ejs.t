@@ -1,5 +1,5 @@
 ---
-to: api/<%= h.inflection.pluralize(name) %>/<%= h.inflection.pluralize(name) %>.controller.js
+to: app/api/<%= h.inflection.pluralize(name) %>/<%= h.inflection.pluralize(name) %>.controller.js
 unless_exists: true
 ---
 const express = require('express');

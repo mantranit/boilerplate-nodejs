@@ -1,6 +1,6 @@
 ---
 inject: true
-to: models/index.js
+to: app/models/index.js
 before: '};'
 skip_if: <%= h.inflection.capitalize(name) %>
 ---

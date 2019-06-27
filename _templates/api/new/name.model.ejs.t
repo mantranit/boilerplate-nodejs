@@ -1,5 +1,5 @@
 ---
-to: models/<%= name %>.model.js
+to: app/models/<%= name %>.model.js
 unless_exists: true
 ---
 const mongoose = require('mongoose');

@@ -1,5 +1,5 @@
 ---
-to: api/<%= h.inflection.pluralize(name) %>/<%= name %>.service.js
+to: app/api/<%= h.inflection.pluralize(name) %>/<%= name %>.service.js
 unless_exists: true
 ---
 const { <%= h.inflection.capitalize(name) %> } = require('models');
