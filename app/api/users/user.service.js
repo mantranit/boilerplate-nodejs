@@ -11,6 +11,7 @@ module.exports = {
   forgotPassword,
   createPassword,
   getAll,
+  search,
   getById,
   create,
   update,
@@ -105,6 +106,24 @@ async function createPassword(accessToken, userParam) {
 
 async function getAll() {
   return await User.find().select('-hash -accessToken');
+}
+
+async function search(filter) {
+  let fullText = {};
+  if (filter.text) {
+    fullText['$text'] = { $search: filter.text };
+  }
+  console.log(fullText)
+  const data = await User.find()
+    .select('-hash -accessToken')
+    .skip(filter.skip)
+    .limit(filter.limit)
+    .sort(filter.sort);
+  const total = await User.count();
+  return {
+    data,
+    total
+  }
 }
 
 async function getById(id) {
