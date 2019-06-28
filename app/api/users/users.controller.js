@@ -137,6 +137,47 @@ router.get('/', authorize(), (req, res, next) => {
 
 /**
  * @swagger
+ * /users/search:
+ *   post:
+ *     tags:
+ *       - Users
+ *     description: Returns users by filter
+ *     security:
+ *       - Bearer: []
+ *     parameters:
+ *       - in: formData
+ *         name: filter
+ *     responses:
+ *       200:
+ *         description: It always return status code 200 and the end user must be check status inside the response
+ */
+router.post('/search', authorize(), (req, res, next) => {
+  let filter = {
+    text: '',
+    skip: 0,
+    limit: 10,
+    sort: {
+      createdDate: 'desc'
+    }
+  };
+  if (req.body.filter) {
+    filter = {
+      ...filter,
+      ...JSON.parse(req.body.filter)
+    }
+  }
+  userService.search(filter)
+    .then(users => res.json({
+      status: 200,
+      data: users.data,
+      total: users.total,
+      ...filter
+    }))
+    .catch(err => next(err));
+});
+
+/**
+ * @swagger
  * /users/current:
  *   get:
  *     tags:
