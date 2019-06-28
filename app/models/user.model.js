@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const schema = new Schema({
+const userSchema = new Schema({
 
   email: {type: String, required: true, unique: true},
 
@@ -21,6 +21,8 @@ const schema = new Schema({
 
 });
 
-schema.set('toJSON', {virtuals: true});
+userSchema.index({ '$**': 'text' });
 
-module.exports = mongoose.model('User', schema);
+userSchema.set('toJSON', { virtuals: true });
+
+module.exports = mongoose.model('User', userSchema);
