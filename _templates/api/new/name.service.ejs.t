@@ -6,6 +6,7 @@ const { <%= h.inflection.capitalize(name) %> } = require('models');
 
 module.exports = {
   getAll,
+  search,
   getById,
   create,
   update,
@@ -14,6 +15,23 @@ module.exports = {
 
 async function getAll() {
   return await <%= h.inflection.capitalize(name) %>.find();
+}
+
+async function search(filter) {
+  let fullText = {};
+  if (filter.text) {
+    fullText['$text'] = { $search: filter.text };
+  }
+
+  const data = await <%= h.inflection.capitalize(name) %>.find(fullText)
+    .skip(filter.skip)
+    .limit(filter.limit)
+    .sort(filter.sort);
+  const total = await <%= h.inflection.capitalize(name) %>.count(fullText);
+  return {
+    data,
+    total
+  }
 }
 
 async function getById(id) {

@@ -33,6 +33,47 @@ router.get('/', authorize(), (req, res, next) => {
 
 /**
 * @swagger
+* /<%= h.inflection.pluralize(name) %>/search:
+*   post:
+*     tags:
+*       - <%= h.inflection.capitalize(h.inflection.pluralize(name)) %>
+*     description: Returns <%= h.inflection.pluralize(name) %> by filter
+*     security:
+*       - Bearer: []
+*     parameters:
+*       - in: formData
+*         name: filter
+*     responses:
+*       200:
+*         description: It always return status code 200 and the end user must be check status inside the response
+*/
+router.post('/search', authorize(), (req, res, next) => {
+  let filter = {
+    text: '',
+    skip: 0,
+    limit: 10,
+    sort: {
+      createdDate: 'desc'
+    }
+  };
+  if (req.body.filter) {
+    filter = {
+      ...filter,
+      ...JSON.parse(req.body.filter)
+    }
+  }
+  <%= name %>Service.search(filter)
+    .then(<%= h.inflection.pluralize(name) %> => res.json({
+      status: 200,
+      data: <%= h.inflection.pluralize(name) %>.data,
+      total: <%= h.inflection.pluralize(name) %>.total,
+      ...filter
+    }))
+    .catch(err => next(err));
+});
+
+/**
+* @swagger
 * /<%= h.inflection.pluralize(name) %>/:
 *   post:
 *     tags:
@@ -57,7 +98,7 @@ var tmpArray = attributes.split(',');
 *       200:
 *         description: It always return status code 200 and the end user must be check status inside the response
 */
-router.post('/', (req, res, next) => {
+router.post('/', authorize(), (req, res, next) => {
   <%= name %>Service.create(req.body)
     .then(() => res.json({
       status: 200

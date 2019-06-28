@@ -113,13 +113,13 @@ async function search(filter) {
   if (filter.text) {
     fullText['$text'] = { $search: filter.text };
   }
-  console.log(fullText)
-  const data = await User.find()
+
+  const data = await User.find(fullText)
     .select('-hash -accessToken')
     .skip(filter.skip)
     .limit(filter.limit)
     .sort(filter.sort);
-  const total = await User.count();
+  const total = await User.count(fullText);
   return {
     data,
     total

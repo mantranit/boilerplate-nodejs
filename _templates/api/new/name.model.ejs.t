@@ -5,7 +5,7 @@ unless_exists: true
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const schema = new Schema({
+const <%= name %>Schema = new Schema({
   <%
   var i = 0;
   var tmpArray = attributes.split(',');
@@ -21,6 +21,8 @@ const schema = new Schema({
 
 });
 
-schema.set('toJSON', {virtuals: true});
+<%= name %>Schema.index({ '$**': 'text' });
 
-module.exports = mongoose.model('<%= h.inflection.capitalize(name) %>', schema);
+<%= name %>Schema.set('toJSON', { virtuals: true });
+
+module.exports = mongoose.model('<%= h.inflection.capitalize(name) %>', <%= name %>Schema);

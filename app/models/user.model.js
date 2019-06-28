@@ -21,11 +21,8 @@ const userSchema = new Schema({
 
 });
 
-userSchema.index({
-  firstName: 'text',
-  lastName: 'text',
-});
+userSchema.index({ '$**': 'text' });
 
-userSchema.set('toJSON', {virtuals: true});
+userSchema.set('toJSON', { virtuals: true });
 
 module.exports = mongoose.model('User', userSchema);
