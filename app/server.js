@@ -21,6 +21,7 @@ const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 const swaggerUi = require('swagger-ui-express');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use(express.static('public'));
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'web/views'));
 
