@@ -3,7 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const session = require('express-session');
 const bodyParser = require('body-parser');
+const path = require('path');
 const jwt = require('_helpers/jwt');
 const errorHandler = require('_helpers/error-handler');
 const socket = require('_helpers/socket');
@@ -11,6 +13,7 @@ const socket = require('_helpers/socket');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({ origin: '*' }));
+app.use(session({secret: process.env.JWT_SECRET, saveUninitialized: false, resave: false}));
 
 const swaggerJSDoc = require('swagger-jsdoc');
 
@@ -19,6 +22,13 @@ const swaggerDefinition = (process.env.NODE_ENV === 'production') ? require('./s
 const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 const swaggerUi = require('swagger-ui-express');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use(express.static('public'));
+app.set('view engine','ejs');
+app.set('views',path.join(__dirname,'web/views'));
+
+// web routes
+app.use('/', require('./web/routes'));
 
 // use JWT auth to secure the api
 app.use(jwt());

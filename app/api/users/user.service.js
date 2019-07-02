@@ -68,7 +68,7 @@ async function forgotPassword(userParam) {
     config.email.templateRecoverPassword,   //template
     {                                       //dataTemplate
       email: user.email,
-      urlReset: 'http://domain.com/reset-password/' + secret
+      urlReset: `${userParam.domain}/reset-password/${secret}`
     }
   );
 

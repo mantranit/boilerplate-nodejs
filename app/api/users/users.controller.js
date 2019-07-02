@@ -2,7 +2,7 @@
 const router = express.Router();
 const userService = require('./user.service');
 const authorize = require('../../_helpers/authorize');
-const { getUserRole } = require('../../_helpers/utils');
+const { getUserRole, getDomain } = require('../../_helpers/utils');
 
 // routes
 /**
@@ -80,7 +80,8 @@ router.post('/register', (req, res, next) => {
  *         description: It always return status code 200 and the end user must be check status inside the response
  */
 router.post('/forgot-password', (req, res, next) => {
-  userService.forgotPassword(req.body)
+  const domain = getDomain(req);
+  userService.forgotPassword({...req.body, domain})
     .then(() => res.json({
       status: 200
     }))
