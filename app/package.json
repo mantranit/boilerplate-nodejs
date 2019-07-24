@@ -13,6 +13,9 @@
     "dev": "SET DEBUG=express:* & nodemon ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": ">=10.15.3"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
