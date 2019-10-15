@@ -5,7 +5,7 @@
       "version": "1.0.1",
       "description": "Simple RESTful API"
     },
-    "host": "c4c-be.herokuapp.com",
+    "host": "boilerplate-nodejs.herokuapp.com",
     "basePath": "/api",
     "schemes": ["https"],
     "consumes": ["application/x-www-form-urlencoded"],
