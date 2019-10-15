@@ -2,7 +2,7 @@
 const router = express.Router();
 const userService = require('./user.service');
 const authorize = require('../../_helpers/authorize');
-const { getUserRole, getDomain } = require('../../_helpers/utils');
+const { USER_ROLE, STATUS_CODE, getDomain } = require('../../_helpers/utils');
 
 // routes
 /**
@@ -26,7 +26,7 @@ const { getUserRole, getDomain } = require('../../_helpers/utils');
 router.post('/authenticate', (req, res, next) => {
   userService.authenticate(req.body)
     .then(user => user ? res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: user
     }) : res.sendStatus(400))
     .catch(err => next(err));
@@ -59,7 +59,7 @@ router.post('/authenticate', (req, res, next) => {
 router.post('/register', (req, res, next) => {
   userService.create(req.body)
     .then(() => res.json({
-      status: 200
+      status: STATUS_CODE
     }))
     .catch(err => next(err));
 });
@@ -83,7 +83,7 @@ router.post('/forgot-password', (req, res, next) => {
   const domain = getDomain(req);
   userService.forgotPassword({...req.body, domain})
     .then(() => res.json({
-      status: 200
+      status: STATUS_CODE
     }))
     .catch(err => next(err));
 });
@@ -109,7 +109,7 @@ router.post('/forgot-password', (req, res, next) => {
 router.post('/create-password/:accessToken', (req, res, next) => {
   userService.createPassword(req.params.accessToken, req.body)
     .then(() => res.json({
-      status: 200
+      status: STATUS_CODE
     }))
     .catch(err => next(err));
 });
@@ -130,7 +130,7 @@ router.post('/create-password/:accessToken', (req, res, next) => {
 router.get('/', authorize(), (req, res, next) => {
   userService.getAll()
     .then(users => res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: users
     }))
     .catch(err => next(err));
@@ -169,7 +169,7 @@ router.post('/search', authorize(), (req, res, next) => {
   }
   userService.search(filter)
     .then(users => res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: users.data,
       total: users.total,
       ...filter
@@ -193,7 +193,7 @@ router.post('/search', authorize(), (req, res, next) => {
 router.get('/current', authorize(), (req, res, next) => {
   userService.getById(req.user.sub)
     .then(user => user ? res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: user
     }) : res.sendStatus(404))
     .catch(err => next(err));
@@ -219,7 +219,7 @@ router.get('/current', authorize(), (req, res, next) => {
 router.get('/:id', authorize(), (req, res, next) => {
   userService.getById(req.params.id)
     .then(user => user ? res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: user
     }) : res.sendStatus(404))
     .catch(err => next(err));
@@ -253,7 +253,7 @@ router.get('/:id', authorize(), (req, res, next) => {
 router.put('/:id', authorize(), (req, res, next) => {
   userService.update(req.params.id, req.body)
     .then(user => user ? res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: user
     }) : res.sendStatus(400))
     .catch(err => next(err));
@@ -276,10 +276,10 @@ router.put('/:id', authorize(), (req, res, next) => {
  *       200:
  *         description: It always return status code 200 and the end user must be check status inside the response
  */
-router.delete('/:id', authorize(getUserRole().ADMIN), (req, res, next) => {
+router.delete('/:id', authorize(USER_ROLE.ADMIN), (req, res, next) => {
   userService.delete(req.params.id)
     .then(() => res.json({
-      status: 200
+      status: STATUS_CODE
     }))
     .catch(err => next(err));
 });

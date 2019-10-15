@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { User } = require('models/index');
-const { getUserStatus } = require('_helpers/utils');
+const { USER_STATUS } = require('_helpers/utils');
 const { validatePassword } = require('_helpers/validations');
 
 module.exports = {
@@ -33,7 +33,7 @@ async function createPassword(accessToken, userParam) {
   }
 
   user.hash = bcrypt.hashSync(userParam.password, 10);
-  user.status = getUserStatus().ACTIVE;
+  user.status = USER_STATUS.ACTIVE;
   user.accessToken = '';
 
   return await user.save();

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { User } = require('models/index');
 const generator = require('generate-password');
-const { getUserStatus, sendEmail } = require('_helpers/utils');
+const { USER_STATUS, sendEmail } = require('_helpers/utils');
 const { validateEmail, validatePassword } = require('_helpers/validations');
 
 module.exports = {
@@ -23,7 +23,7 @@ async function authenticate({email, password, stay}) {
   if (!user) {
     throw 'Can not found an account with your information!';
   }
-  if(user.status !== getUserStatus().ACTIVE) {
+  if(user.status !== USER_STATUS.ACTIVE) {
     throw 'This account was ' + user.status.toLowerCase() + '.';
   }
 
@@ -52,7 +52,7 @@ async function forgotPassword(userParam) {
     throw 'Can not found an account with your information!';
   }
 
-  // user.status = getUserStatus().LOCKED;
+  // user.status = USER_STATUS.LOCKED;
 
   //token for create new password
   let secret = generator.generate({
@@ -98,7 +98,7 @@ async function createPassword(accessToken, userParam) {
   }
 
   user.hash = bcrypt.hashSync(userParam.password, 10);
-  user.status = getUserStatus().ACTIVE;
+  user.status = USER_STATUS.ACTIVE;
   user.accessToken = '';
 
   return await user.save();
@@ -154,7 +154,7 @@ async function create(userParam) {
   const user = new User({
     ...userParam,
     hash: bcrypt.hashSync(userParam.password, 10),
-    status: getUserStatus().ACTIVE
+    status: USER_STATUS.ACTIVE
   });
 
   // save user

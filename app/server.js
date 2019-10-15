@@ -18,7 +18,7 @@ app.use(session({secret: process.env.JWT_SECRET, saveUninitialized: false, resav
 const swaggerJSDoc = require('swagger-jsdoc');
 
 // initialize swagger-jsdoc
-const swaggerDefinition = (process.env.NODE_ENV === 'production') ? require('./swagger.heroku.json') : require('./swagger.json');
+const swaggerDefinition = (process.env.NODE_ENV === 'dev') ? require('./swagger.json') : require('./swagger.heroku.json');
 const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 const swaggerUi = require('swagger-ui-express');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -40,7 +40,7 @@ app.use('/api', require('./api'));
 app.use(errorHandler);
 
 // start server
-const port = (process.env.NODE_ENV === 'production') ? (process.env.PORT || 80) : 4000;
+const port = (process.env.NODE_ENV === 'dev') ? 4000 : (process.env.PORT || 80);
 const server = app.listen(port, function () {
     console.log('Server listening on port ' + port);
 });

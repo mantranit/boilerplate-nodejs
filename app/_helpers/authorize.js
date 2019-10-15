@@ -19,8 +19,12 @@ function authorize(roles = []) {
       if (roles.length && !roles.includes(req.user.role)) {
         // user's role is not authorized
         return res.status(200).json({
-          status: 401,
-          message: 'Unauthorized'
+          status: {
+            ...STATUS_CODE,
+            success: false,
+            message: 'Unauthorized',
+            errorCode: 401,
+          },
         });
       }
 

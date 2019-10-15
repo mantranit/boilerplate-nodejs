@@ -20,7 +20,7 @@
 * http://localhost:4000
 
 ## Env
-* example in server/env
+* example in ./env
 
 ## Generate
 * Using __hygen__ library, you have to install hygen global -- e.g: npm i -g hygen

@@ -2,7 +2,7 @@
   "swaggerDefinition": {
     "info": {
       "title": "API on HEROKU",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "Simple RESTful API"
     },
     "host": "c4c-be.herokuapp.com",

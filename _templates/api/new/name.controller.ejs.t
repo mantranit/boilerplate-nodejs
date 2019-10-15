@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const <%= name %>Service = require('./<%= name %>.service');
 const authorize = require('../../_helpers/authorize');
-const { getUserRole } = require('../../_helpers/utils');
+const { USER_ROLE, STATUS_CODE } = require('../../_helpers/utils');
 
 //route
 /**
@@ -25,7 +25,7 @@ const { getUserRole } = require('../../_helpers/utils');
 router.get('/', authorize(), (req, res, next) => {
   <%= name %>Service.getAll()
     .then(<%= h.inflection.pluralize(name) %> => res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: <%= h.inflection.pluralize(name) %>
     }))
     .catch(err => next(err));
@@ -64,7 +64,7 @@ router.post('/search', authorize(), (req, res, next) => {
   }
   <%= name %>Service.search(filter)
     .then(<%= h.inflection.pluralize(name) %> => res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: <%= h.inflection.pluralize(name) %>.data,
       total: <%= h.inflection.pluralize(name) %>.total,
       ...filter
@@ -101,7 +101,7 @@ var tmpArray = attributes.split(',');
 router.post('/', authorize(), (req, res, next) => {
   <%= name %>Service.create(req.body)
     .then(() => res.json({
-      status: 200
+      status: STATUS_CODE
     }))
     .catch(err => next(err));
 });
@@ -126,7 +126,7 @@ router.post('/', authorize(), (req, res, next) => {
 router.get('/:id', authorize(), (req, res, next) => {
   <%= name %>Service.getById(req.params.id)
     .then(<%= name %> => <%= name %> ? res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: <%= name %>
     }) : res.sendStatus(404))
     .catch(err => next(err));
@@ -164,7 +164,7 @@ var tmpArray = attributes.split(',');
 router.put('/:id', authorize(), (req, res, next) => {
   <%= name %>Service.update(req.params.id, req.body)
     .then(<%= name %> => <%= name %> ? res.json({
-      status: 200,
+      status: STATUS_CODE,
       data: <%= name %>
     }) : res.sendStatus(400))
     .catch(err => next(err));
@@ -190,7 +190,7 @@ router.put('/:id', authorize(), (req, res, next) => {
 router.delete('/:id', authorize(), (req, res, next) => {
   <%= name %>Service.delete(req.params.id)
     .then(() => res.json({
-      status: 200
+      status: STATUS_CODE
     }))
     .catch(err => next(err));
 });

@@ -5,29 +5,31 @@ const path = require('path');
 const request = require('request-promise-native');
 const nodemailer = require('nodemailer');
 
+const STATUS_CODE = {
+  success: true,
+  message: 'OK',
+  errorCode: 200,
+};
+
+const USER_STATUS = {
+  ACTIVE: 'ACTIVE',
+  DEACTIVATED: 'DEACTIVATED',
+  PENDING: 'PENDING',
+  LOCKED: 'LOCKED'
+};
+
+const USER_ROLE = {
+  ADMIN: 'ADMIN',
+  USER: 'USER'
+};
+
 module.exports = {
-  getUserStatus,
-  getUserRole,
+  USER_STATUS,
+  USER_ROLE,
   getApiUrl,
   getDomain,
   sendEmail
 };
-
-function getUserStatus() {
-  return {
-    ACTIVE: 'ACTIVE',
-    DEACTIVATED: 'DEACTIVATED',
-    PENDING: 'PENDING',
-    LOCKED: 'LOCKED'
-  }
-}
-
-function getUserRole() {
-  return {
-    ADMIN: 'ADMIN',
-    USER: 'USER'
-  }
-}
 
 function getApiUrl(req) {
   return req.protocol + '://' + req.get('host') + '/api';

@@ -9,7 +9,19 @@ pipelines:
   branches:
     develop:
     - step:
-      caches:
+        name: Setup
+        caches:
         - node
-      script: # Modify the commands below to build your repository.
-        - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD:master
+        script:
+        - cp -a env app/.env
+        - tar czfv application.tgz app
+        artifacts:
+        - application.tgz
+    - step:
+        name: Deploy
+        script:
+        - pipe: atlassian/heroku-deploy:0.1.2
+          variables:
+            HEROKU_API_KEY: "7c879167-c110-4112-be2a-c9954c4952b9"
+            HEROKU_APP_NAME: "boilerplate-nodejs"
+            ZIP_FILE: "application.tgz"
