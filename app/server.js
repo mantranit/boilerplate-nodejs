@@ -3,17 +3,14 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const session = require('express-session');
-const bodyParser = require('body-parser');
 const path = require('path');
 const jwt = require('_helpers/jwt');
 const errorHandler = require('_helpers/error-handler');
 const socket = require('_helpers/socket');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(cors({ origin: '*' }));
-app.use(session({secret: process.env.JWT_SECRET, saveUninitialized: false, resave: false}));
 
 const swaggerJSDoc = require('swagger-jsdoc');
 
