@@ -4,8 +4,6 @@ const userService = require('../api/users/user.service');
 module.exports = jwt;
 
 function jwt() {
-  const secret = process.env.JWT_SECRET;
-
   let path = [
     // public routes that don't require authentication
     '/api/users/authenticate',
@@ -15,7 +13,7 @@ function jwt() {
     /\/api\/users\/create-password/i
   ];
 
-  return expressJwt({ secret, isRevoked }).unless({ path });
+  return expressJwt({ secret: process.env.JWT_SECRET, algorithms: [process.env.JWT_ALGORITHMS], isRevoked }).unless({ path });
 }
 
 async function isRevoked(req, payload, done) {
