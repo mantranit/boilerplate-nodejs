@@ -26,22 +26,22 @@
     "express-jwt": "^5.3.3",
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
-    "generate-password": "^1.5.1",
+    "generate-password": "^1.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.5.7",
+    "mongodb": "^3.6.6",
     "mongoose": "^5.12.3",
     "mustache": "^3.2.1",
     "nodemailer": "^5.1.1",
     "path": "^0.12.7",
     "request": "^2.88.2",
-    "request-promise-native": "^1.0.8",
+    "request-promise-native": "^1.0.9",
     "rootpath": "^0.1.2",
     "socket.io": "^2.4.1",
-    "socketio-jwt": "^4.5.0",
+    "socketio-jwt": "^4.6.2",
     "swagger-jsdoc": "^3.7.0",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.7"
   }
 }
