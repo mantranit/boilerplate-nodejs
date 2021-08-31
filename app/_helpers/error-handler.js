@@ -5,7 +5,7 @@ module.exports = errorHandler;
 function errorHandler(err, req, res, next) {
     if (typeof (err) === 'string') {
         // custom application error
-        return res.status(200).json({
+        return res.status(400).json({
             status: {
                 ...STATUS_CODE,
                 success: false,
@@ -17,7 +17,7 @@ function errorHandler(err, req, res, next) {
 
     if (err.name === 'ValidationError') {
         // mongoose validation error
-        return res.status(200).json({
+        return res.status(400).json({
             status: {
                 ...STATUS_CODE,
                 success: false,
@@ -29,7 +29,7 @@ function errorHandler(err, req, res, next) {
 
     if (err.name === 'UnauthorizedError') {
         // jwt authentication error
-        return res.status(200).json({
+        return res.status(401).json({
             status: {
                 ...STATUS_CODE,
                 success: false,
@@ -40,7 +40,7 @@ function errorHandler(err, req, res, next) {
     }
 
     // default to 500 server error
-    return res.status(200).json({
+    return res.status(500).json({
         status: {
             ...STATUS_CODE,
             success: false,

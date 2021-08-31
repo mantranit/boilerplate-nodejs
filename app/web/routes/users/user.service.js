@@ -28,7 +28,8 @@ async function createPassword(accessToken, userParam) {
   if (userParam.password && !validatePassword(userParam.password)) {
     throw 'Password does not meet requirements.';
   }
-  if(userParam.confirmPassword && userParam.confirmPassword !== userParam.password) {
+  
+  if(userParam.confirmPassword !== userParam.password) {
     throw 'Confirm password is not match.';
   }
 

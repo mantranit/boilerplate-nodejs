@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const path = require('path');
+const session = require('express-session');
 const jwt = require('_helpers/jwt');
 const errorHandler = require('_helpers/error-handler');
 const socket = require('_helpers/socket');
@@ -15,7 +16,7 @@ app.use(cors({ origin: '*' }));
 const swaggerJSDoc = require('swagger-jsdoc');
 
 // initialize swagger-jsdoc
-const swaggerDefinition = (process.env.NODE_ENV === 'production') ? require('./swagger.heroku.json') : require('./swagger.json');
+const swaggerDefinition = require('./swagger.json');
 const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 const swaggerUi = require('swagger-ui-express');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -25,6 +26,7 @@ app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'web/views'));
 
 // web routes
+app.use(session({ resave: true ,secret: process.env.JWT_SECRET , saveUninitialized: true}));
 app.use('/', require('./web/routes'));
 
 // use JWT auth to secure the api

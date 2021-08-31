@@ -3,116 +3,70 @@ const router = express.Router();
 const userService = require('./user.service');
 const authorize = require('../../_helpers/authorize');
 const { USER_ROLE, STATUS_CODE, getDomain } = require('../../_helpers/utils');
+const respond = require('../respond');
 
-// routes
 /**
  * @swagger
- * /users/authenticate:
- *   post:
+ * /users/current:
+ *   get:
  *     tags:
  *       - Users
- *     description: Login and Returns token
- *     parameters:
- *       - in: formData
- *         name: email
- *         required: true
- *       - in: formData
- *         name: password
- *         required: true
+ *     description: Returns current user
+ *     security:
+ *       - Bearer: []
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response the response
+ *         description: Successful
  */
-router.post('/authenticate', (req, res, next) => {
-  userService.authenticate(req.body)
-    .then(user => user ? res.json({
-      status: STATUS_CODE,
-      data: user
-    }) : res.sendStatus(400))
-    .catch(err => next(err));
-});
+ router.get('/current', authorize(), (req, res, next) => {
+  req.params.id = req.user.aud;
+  next();
+}, userService.getById, respond);
 
 /**
  * @swagger
- * /users/register:
- *   post:
+ * /users/current:
+ *   put:
  *     tags:
  *       - Users
- *     description: Returns status true|false
+ *     description: Update current user and Returns
+ *     security:
+ *       - Bearer: []
  *     parameters:
  *       - in: formData
  *         name: firstName
- *         required: true
  *       - in: formData
  *         name: lastName
- *         required: true
  *       - in: formData
  *         name: email
- *         required: true
  *       - in: formData
  *         name: password
- *         required: true
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.post('/register', (req, res, next) => {
-  userService.create(req.body)
-    .then(() => res.json({
-      status: STATUS_CODE
-    }))
-    .catch(err => next(err));
-});
+ router.put('/current', authorize(), (req, res, next) => {
+  req.params.id = req.user.aud;
+  next();
+}, userService.update, respond);
 
 /**
  * @swagger
- * /users/forgot-password:
- *   post:
+ * /users/current:
+ *   delete:
  *     tags:
  *       - Users
- *     description: Sent a token to email and Returns status true|false
- *     parameters:
- *       - in: formData
- *         name: email
- *         required: true
+ *     description: Delete current user
+ *     security:
+ *       - Bearer: []
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.post('/forgot-password', (req, res, next) => {
-  const domain = getDomain(req);
-  userService.forgotPassword({...req.body, domain})
-    .then(() => res.json({
-      status: STATUS_CODE
-    }))
-    .catch(err => next(err));
-});
-
-/**
- * @swagger
- * /users/create-password/{accessToken}:
- *   post:
- *     tags:
- *       - Users
- *     description: Set a password for the user and Returns status true|false
- *     parameters:
- *       - in: path
- *         name: accessToken
- *         required: true
- *       - in: formData
- *         name: password
- *         required: true
- *     responses:
- *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
- */
-router.post('/create-password/:accessToken', (req, res, next) => {
-  userService.createPassword(req.params.accessToken, req.body)
-    .then(() => res.json({
-      status: STATUS_CODE
-    }))
-    .catch(err => next(err));
-});
+ router.delete('/current', authorize(), (req, res, next) => {
+  req.params.id = req.user.aud;
+  next();
+}, userService.delete, respond);
 
 /**
  * @swagger
@@ -125,16 +79,9 @@ router.post('/create-password/:accessToken', (req, res, next) => {
  *       - Bearer: []
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.get('/', authorize(), (req, res, next) => {
-  userService.getAll()
-    .then(users => res.json({
-      status: STATUS_CODE,
-      data: users
-    }))
-    .catch(err => next(err));
-});
+router.get('/', authorize(USER_ROLE.ADMIN), userService.getAll, respond);
 
 /**
  * @swagger
@@ -150,54 +97,37 @@ router.get('/', authorize(), (req, res, next) => {
  *         name: filter
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.post('/search', authorize(), (req, res, next) => {
-  let filter = {
-    text: '',
-    skip: 0,
-    limit: 10,
-    sort: {
-      createdDate: 'desc'
-    }
-  };
-  if (req.body.filter) {
-    filter = {
-      ...filter,
-      ...JSON.parse(req.body.filter)
-    }
-  }
-  userService.search(filter)
-    .then(users => res.json({
-      status: STATUS_CODE,
-      data: users.data,
-      total: users.total,
-      ...filter
-    }))
-    .catch(err => next(err));
-});
+router.post('/search', authorize(USER_ROLE.ADMIN), userService.search, respond);
 
 /**
  * @swagger
- * /users/current:
- *   get:
+ * /users/:
+ *   post:
  *     tags:
  *       - Users
- *     description: Returns current user
+ *     description: Returns status true|false
  *     security:
  *       - Bearer: []
+ *     parameters:
+ *       - in: formData
+ *         name: firstName
+ *         required: true
+ *       - in: formData
+ *         name: lastName
+ *         required: true
+ *       - in: formData
+ *         name: email
+ *         required: true
+ *       - in: formData
+ *         name: password
+ *         required: true
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.get('/current', authorize(), (req, res, next) => {
-  userService.getById(req.user.sub)
-    .then(user => user ? res.json({
-      status: STATUS_CODE,
-      data: user
-    }) : res.sendStatus(404))
-    .catch(err => next(err));
-});
+ router.post("/", authorize(USER_ROLE.ADMIN), userService.create, respond);
 
 /**
  * @swagger
@@ -214,16 +144,9 @@ router.get('/current', authorize(), (req, res, next) => {
  *         required: true
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.get('/:id', authorize(), (req, res, next) => {
-  userService.getById(req.params.id)
-    .then(user => user ? res.json({
-      status: STATUS_CODE,
-      data: user
-    }) : res.sendStatus(404))
-    .catch(err => next(err));
-});
+router.get('/:id', authorize(USER_ROLE.ADMIN), userService.getById, respond);
 
 /**
  * @swagger
@@ -248,16 +171,9 @@ router.get('/:id', authorize(), (req, res, next) => {
  *         name: password
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.put('/:id', authorize(), (req, res, next) => {
-  userService.update(req.params.id, req.body)
-    .then(user => user ? res.json({
-      status: STATUS_CODE,
-      data: user
-    }) : res.sendStatus(400))
-    .catch(err => next(err));
-});
+router.put('/:id', authorize(), userService.update, respond);
 
 /**
  * @swagger
@@ -274,14 +190,8 @@ router.put('/:id', authorize(), (req, res, next) => {
  *         required: true
  *     responses:
  *       200:
- *         description: It always return status code 200 and the end user must be check status inside the response
+ *         description: Successful
  */
-router.delete('/:id', authorize(USER_ROLE.ADMIN), (req, res, next) => {
-  userService.delete(req.params.id)
-    .then(() => res.json({
-      status: STATUS_CODE
-    }))
-    .catch(err => next(err));
-});
+router.delete('/:id', authorize(USER_ROLE.ADMIN), userService.delete, respond);
 
 module.exports = router;

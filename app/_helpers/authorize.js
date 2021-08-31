@@ -11,22 +11,15 @@ function authorize(roles = []) {
 
   return [
     // authenticate JWT token and attach user to request object (req.user)
-    expressJwt({ secret: process.env.JWT_SECRET, algorithms: [process.env.JWT_ALGORITHMS] }),
+    expressJwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'] }),
 
     // authorize based on user role
     (req, res, next) => {
       if (roles.length && !roles.includes(req.user.role)) {
         // user's role is not authorized
-        return res.status(200).json({
-          status: {
-            ...STATUS_CODE,
-            success: false,
-            message: 'Unauthorized',
-            errorCode: 401,
-          },
-        });
+        next(new Error(`Forbidden: ${req.user.role} doesn't have permission to access on this url.`));
       }
-
+      
       // authentication and authorization successful
       next();
     }
