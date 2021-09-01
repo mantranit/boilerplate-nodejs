@@ -112,12 +112,6 @@ router.post('/search', authorize(USER_ROLE.ADMIN), userService.search, respond);
  *       - Bearer: []
  *     parameters:
  *       - in: formData
- *         name: firstName
- *         required: true
- *       - in: formData
- *         name: lastName
- *         required: true
- *       - in: formData
  *         name: email
  *         required: true
  *       - in: formData

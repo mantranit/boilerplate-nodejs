@@ -5,12 +5,6 @@ const path = require('path');
 const request = require('request-promise-native');
 const nodemailer = require('nodemailer');
 
-const STATUS_CODE = {
-  success: true,
-  message: 'OK',
-  errorCode: 200,
-};
-
 const USER_STATUS = {
   ACTIVE: 'ACTIVE',
   DEACTIVATED: 'DEACTIVATED',

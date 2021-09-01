@@ -1,5 +1,6 @@
 ﻿const bcrypt = require('bcryptjs');
 const { User, Session } = require('models/index');
+const errors = require("_helpers/errors");
 const { USER_STATUS } = require('_helpers/utils');
 const { validateEmail, validatePassword } = require('_helpers/validations');
 const { USER_ROLE } = require('../../_helpers/utils');
@@ -67,22 +68,16 @@ async function create(req, res, next) {
   try {
     // validate
     if (!(userParam.email && validateEmail(userParam.email))) {
-      return next(new Error('Please enter an valid email address.'));
+      return next(new errors.BadRequestError('Please enter an valid email address.'));
     }
     if (await User.findOne({email: userParam.email.toString().toLowerCase()})) {
-      return next(new Error('This email already exists. Try signing-in.'));
-    }
-    if (!userParam.firstName) {
-      return next(new Error('Please enter your first name.'));
-    }
-    if (!userParam.lastName) {
-      return next(new Error('Please enter your last name.'));
+      return next(new errors.BadRequestError('This email already exists. Try signing-in.'));
     }
     if (!userParam.password) {
-      return next(new Error('Please enter your password.'));
+      return next(new errors.BadRequestError('Please enter your password.'));
     }
     if (userParam.password && !validatePassword(userParam.password)) {
-      return next(new Error('Password does not meet requirements.'));
+      return next(new errors.BadRequestError('Password does not meet requirements.'));
     }
 
     const user = new User({
@@ -117,24 +112,24 @@ async function update(req, res, next) {
     const user = await User.findById(id).select('-hash -accessToken');
     // validate
     if (!user) {
-      return next(new Error('User not found'));
+      return next(new errors.NotFoundError('User not found'));
     }
 
     //validate
     if(userParam.email) {
       if (!validateEmail(userParam.email)) {
-        return next(new Error('Please enter an valid email address.'));
+        return next(new errors.BadRequestError('Please enter an valid email address.'));
       }
 
       if (user.email !== userParam.email && await User.findOne({email: userParam.email})) {
-        return next(new Error('This email already exists.'));
+        return next(new errors.BadRequestError('This email already exists.'));
       }
     }
 
     // hash password if it was entered
     if (userParam.password) {
       if (!validatePassword(userParam.password)) {
-        return next(new Error('Password does not meet requirements.'));
+        return next(new errors.BadRequestError('Password does not meet requirements.'));
       }
 
       user.hash = bcrypt.hashSync(userParam.password, 10);

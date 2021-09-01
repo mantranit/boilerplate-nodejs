@@ -1,4 +1,5 @@
 const expressJwt = require('express-jwt');
+const errors = require('./errors');
 
 module.exports = authorize;
 
@@ -17,7 +18,7 @@ function authorize(roles = []) {
     (req, res, next) => {
       if (roles.length && !roles.includes(req.user.role)) {
         // user's role is not authorized
-        next(new Error(`Forbidden: ${req.user.role} doesn't have permission to access on this url.`));
+        next(new errors.ForbiddenError(`Role '${req.user.role}' doesn't have permission to access on this url.`));
       }
       
       // authentication and authorization successful

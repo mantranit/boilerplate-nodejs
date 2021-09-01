@@ -9,7 +9,6 @@ function jwt() {
     '/api/auths/login',
     '/api/auths/register',
     '/api/auths/forgot-password',
-    /\/api\/auths\/token/i,
     /\/api\/auths\/create-password/i
   ];
 

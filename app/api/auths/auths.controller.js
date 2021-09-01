@@ -33,12 +33,6 @@ router.post("/login", authService.login, respond);
  *     description: Returns status true|false
  *     parameters:
  *       - in: formData
- *         name: firstName
- *         required: true
- *       - in: formData
- *         name: lastName
- *         required: true
- *       - in: formData
  *         name: email
  *         required: true
  *       - in: formData

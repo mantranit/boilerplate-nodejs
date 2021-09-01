@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const generator = require("generate-password");
 const { User, Session } = require("models/index");
+const errors = require("_helpers/errors");
 const { USER_STATUS, USER_ROLE, sendEmail, getDomain } = require("_helpers/utils");
 const { validateEmail, validatePassword } = require("_helpers/validations");
 
@@ -19,14 +20,14 @@ async function login(req, res, next) {
   try {
     let user = await User.findOne({ email: email.toString().toLowerCase() });
     if (!user) {
-      return next(new Error("Can not found an account with your information!"));
+      return next(new errors.NotFoundError("Can not found an account with your information!"));
     }
     if (user.status !== USER_STATUS.ACTIVE) {
-      return next(new Error("This account was " + user.status.toLowerCase() + "."));
+      return next(new errors.ForbiddenError("This account was " + user.status.toLowerCase() + "."));
     }
 
     if (!bcrypt.compareSync(password, user.hash)) {
-      return next(new Error("Incorrect password. Please try again."));
+      return next(new errors.BadRequestError("Incorrect password. Please try again."));
     }
 
     const { hash, status, accessToken, role, ...userWithoutHash } =
@@ -67,22 +68,16 @@ async function register(req, res, next) {
   try {
     // validate
     if (!(userParam.email && validateEmail(userParam.email))) {
-      return next(new Error("Please enter an valid email address."));
+      return next(new errors.BadRequestError("Please enter an valid email address."));
     }
     if (await User.findOne({ email: userParam.email.toString().toLowerCase() })) {
-      return next(new Error("This email already exists. Try signing-in."));
-    }
-    if (!userParam.firstName) {
-      return next(new Error("Please enter your first name."));
-    }
-    if (!userParam.lastName) {
-      return next(new Error("Please enter your last name."));
+      return next(new errors.BadRequestError("This email already exists. Try signing-in."));
     }
     if (!userParam.password) {
-      return next(new Error("Please enter your password."));
+      return next(new errors.BadRequestError("Please enter your password."));
     }
     if (userParam.password && !validatePassword(userParam.password)) {
-      return next(new Error("Password does not meet requirements."));
+      return next(new errors.BadRequestError("Password does not meet requirements."));
     }
 
     // set role admin for first account
@@ -111,7 +106,7 @@ async function forgotPassword(req, res, next) {
       email: userParam.email.toString().toLowerCase(),
     });
     if (!user) {
-      return next(new Error("Can not found an account with your information!"));
+      return next(new errors.NotFoundError("Can not found an account with your information!"));
     }
 
     // user.status = USER_STATUS.LOCKED;
@@ -152,22 +147,22 @@ async function resetPassword(req, res, next) {
   const {body: userParam } = req;
   try {
     if (!accessToken) {
-      return next(new Error("Access token is not found."));
+      return next(new errors.NotFoundError("Access token not found."));
     }
     const user = await User.findOne({ accessToken });
     if (!user) {
-      return next(new Error("User is not found."));
+      return next(new errors.NotFoundError("User not found."));
     }
 
     if (!userParam.password) {
-      return next(new Error("Please enter your password."));
+      return next(new errors.BadRequestError("Please enter your password."));
     }
     // hash password if it was entered
     if (userParam.password && !validatePassword(userParam.password)) {
-      return next(new Error("Password does not meet requirements."));
+      return next(new errors.BadRequestError("Password does not meet requirements."));
     }
     if (userParam.confirmPassword && userParam.confirmPassword !== userParam.password) {
-      return next(new Error("Confirm password is not match."));
+      return next(new errors.BadRequestError("Confirm password is not match."));
     }
 
     user.hash = bcrypt.hashSync(userParam.password, 10);
