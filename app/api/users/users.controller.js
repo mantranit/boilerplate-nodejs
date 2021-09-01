@@ -167,7 +167,7 @@ router.get('/:id', authorize(USER_ROLE.ADMIN), userService.getById, respond);
  *       200:
  *         description: Successful
  */
-router.put('/:id', authorize(), userService.update, respond);
+router.put('/:id', authorize(USER_ROLE.ADMIN), userService.update, respond);
 
 /**
  * @swagger
