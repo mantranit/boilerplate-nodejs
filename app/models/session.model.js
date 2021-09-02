@@ -21,6 +21,7 @@ const sessionSchema = new Schema({
   }
 });
 
+sessionSchema.index({ '$**': 'text' });
 sessionSchema.set('toJSON', { virtuals: true });
 
 module.exports = mongoose.model('Session', sessionSchema);

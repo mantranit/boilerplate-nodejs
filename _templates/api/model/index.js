@@ -10,7 +10,7 @@ module.exports = [
   },
   {
     type: 'input',
-    name: 'attributes',
+    name: 'model_attributes',
     message: "What's the model's attributes? (separate by comma)"
   }
 ];

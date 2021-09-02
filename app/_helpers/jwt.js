@@ -1,5 +1,6 @@
 const expressJwt = require('express-jwt');
 const { User, Session } = require('../models');
+const { USER_STATUS } = require('./utils');
 
 module.exports = jwt;
 
@@ -20,7 +21,7 @@ async function isRevoked(req, payload, done) {
   const session = await Session.findById(payload.sub);
 
   // revoke token if user no longer exists
-  if (!user || !session) {
+  if (!user || (user && user.status !== USER_STATUS.ACTIVE) || !session) {
     return done(null, true);
   }
 
