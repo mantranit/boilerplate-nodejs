@@ -7,6 +7,9 @@
 * Mustache template for email
 * RegEx for validation.
 
+## Flow
+![Simple_API_Flow](https://github.com/mantranit/boilerplate-nodejs/blob/master/Simple_API.jpg)
+
 ## Structure
 * Connect to DB in __/models/index.js__
 * Schema in each files __*.model.js__ -- e.g: user.model.js
