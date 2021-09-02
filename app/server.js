@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV !== 'production') {
     const swaggerJSDoc = require('swagger-jsdoc');
     // initialize swagger-jsdoc
     const swaggerDefinition = require('./swagger.json');
