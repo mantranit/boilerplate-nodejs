@@ -11,12 +11,11 @@
 * Connect to DB in __/models/index.js__
 * Schema in each files __*.model.js__ -- e.g: user.model.js
 * All API_URL will be define in __/api/index.js__
-* An API always return http_status: __200__. We will custom the status inside response
 
 ## Setup
 * Start MongoDB: mongod
-* Install package: npm install
-* Run dev: npm run dev
+* Install package: yarn
+* Run dev: yarn dev
 * http://localhost:4000
 
 ## Env
@@ -25,8 +24,8 @@
 ## Generate
 * Using __hygen__ library, you have to install hygen global -- e.g: npm i -g hygen
 #### Generate Model only
-* Generate __model__: hygen model new
+* Generate __model__: hygen api model
 * Declare an attribute: __name:type__ (default of type is __String__)
 #### Generate API
-* Generate __api__: hygen api new
+* Generate __api__: hygen api bundle
 * All options will be like model
