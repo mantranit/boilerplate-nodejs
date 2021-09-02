@@ -18,6 +18,10 @@
 * Run dev: yarn dev
 * http://localhost:4000
 
+## Swagger
+* Only available for NODE_ENV=dev
+* http://localhost:4000/api-docs/
+
 ## Env
 * example in ./env
 

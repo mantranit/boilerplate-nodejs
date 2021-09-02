@@ -13,13 +13,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-const swaggerJSDoc = require('swagger-jsdoc');
-
-// initialize swagger-jsdoc
-const swaggerDefinition = require('./swagger.json');
-const swaggerSpec = swaggerJSDoc(swaggerDefinition);
-const swaggerUi = require('swagger-ui-express');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+if (process.env.NODE_ENV === 'dev') {
+    const swaggerJSDoc = require('swagger-jsdoc');
+    // initialize swagger-jsdoc
+    const swaggerDefinition = require('./swagger.json');
+    const swaggerSpec = swaggerJSDoc(swaggerDefinition);
+    const swaggerUi = require('swagger-ui-express');
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 app.use(express.static('public'));
 app.set('view engine','ejs');
